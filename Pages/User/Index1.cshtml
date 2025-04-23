@@ -1,0 +1,31 @@
+﻿@page
+@model ProjectPRN222.Pages.User.Index1Model
+@{
+}
+<h2>Danh sách sản phẩm</h2>
+<a asp-page="Create">Thêm sản phẩm mới</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Ảnh</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Products)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Price</td>
+                <td><img src="@p.ImageUrl" width="100" /></td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@p.Id">Sửa</a> |
+                    <a asp-page="Delete" asp-route-id="@p.Id">Xoá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

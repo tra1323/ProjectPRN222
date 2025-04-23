@@ -40,7 +40,7 @@ namespace ProjectPRN222.Pages.User
 
             // Cập nhật thông tin từ form
             user.FullName = UserProfile.FullName;
-            user.Phone = UserProfile.Phone;
+            user.PhoneNumber = UserProfile.PhoneNumber;
 
             _context.SaveChanges();
 
