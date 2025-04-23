@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+using System;
 using Microsoft.EntityFrameworkCore;
 using ProjectPRN222.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ProjectPRN222.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +11,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Prn222projectContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MyCnn")));
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<Prn222projectContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login"; 
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.Lockout.AllowedForNewUsers = true;
+});
 
 var app = builder.Build();
 
