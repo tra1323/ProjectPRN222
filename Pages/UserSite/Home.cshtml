@@ -1,0 +1,55 @@
+﻿@page
+@model ProjectPRN222.Pages.UserSite.HomeModel
+@{
+}
+<div class="row">
+    <div class="col-md-6">
+        <h2>Danh sách sản phẩm</h2>
+    </div>
+    <div class="col-md-6">
+        <form method="get">
+            <input type="text" name="Search" value="@Model.Search" placeholder="Tìm sản phẩm..." />
+            <button class="btn btn-success" type="submit">Tìm kiếm</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="container m-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <img  src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 150px; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Price</p>
+                        <a href="ProductDetails/@product.Id" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="m-5">
+    @if (Model.TotalPages > 1)
+    {
+        <div>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                if (i == Model.CurrentPage)
+                {
+                    <span class="btn btn-primary disabled">@i</span>
+                }
+                else
+                {
+                    <a href="?CurrentPage=@i&Search=@Model.Search" class="btn btn-outline-primary">@i</a>
+                }
+                <span> </span>
+            }
+
+        </div>
+    }
+</div>
+

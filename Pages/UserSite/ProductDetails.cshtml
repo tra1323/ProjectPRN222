@@ -1,0 +1,56 @@
+﻿@page "{id:int}"
+
+@model ProjectPRN222.Pages.UserSite.ProductDetails
+@{
+}
+
+<style>
+    .image-box {
+        background-color: #000; /* Nền đen */
+        padding: 15px;
+        text-align: center; /* Căn giữa ảnh theo chiều ngang */
+        border-radius: 10px;
+    }
+
+        .image-box img {
+            max-width: 100%; /* Không vượt quá cột */
+            max-height: 300px; /* Giới hạn chiều cao */
+            object-fit: contain; /* Giữ tỉ lệ ảnh, không bị méo */
+            border-radius: 8px;
+        }
+</style>
+
+<div class="m-5">
+	<a href="Home">Trang chủ</a> 
+	<a href="Category?=1">/ Product.Category.Name</a>
+	<a href="Manufacturer?=1">/ Product.Manufacturer.Name</a>
+	<a href="Type?=1">/ Product.Category.Type</a>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.Product.ImageUrl" class="img-fluid" alt="@Model.Product.Name" />
+        </div>
+        <div class="col-md-6">
+            <h2>@Model.Product.Name</h2>
+            <p class="text-muted">Giá: @Model.Product.Price?.ToString("N0") VNĐ</p>
+            <p>Tồn kho: @Model.Product.Stock</p>
+            <p>Loại: <strong>@Model.Product.Category?.Name</strong></p>
+            <p>Nhà sản xuất: <strong>@Model.Product.Manufacturer?.Name</strong></p>
+            <p>@Model.Product.Description</p>
+
+            <form method="post" asp-page-handler="AddToCart">
+                <input type="hidden" name="productId" value="@Model.Product.Id" />
+                <button type="submit" class="btn btn-success me-2">🛒 Thêm vào giỏ hàng</button>
+            </form>
+
+            <form method="post" asp-page-handler="BuyNow">
+                <input type="hidden" name="productId" value="@Model.Product.Id" />
+                <button type="submit" class="btn btn-danger">💳 Mua ngay</button>
+            </form>
+
+            <a href="/User/Home" class="btn btn-secondary mt-3">⬅ Quay lại</a>
+        </div>
+    </div>
+</div>
