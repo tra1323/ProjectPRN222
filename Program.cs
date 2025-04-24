@@ -4,12 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using ProjectPRN222.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ProjectPRN222.Services;
+using ProjectPRN222.Areas.Identity.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSession();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/");
+    options.Conventions.AllowAnonymousToPage("/Account/Login");
+    options.Conventions.AllowAnonymousToPage("/Account/Register");
+});
+
 builder.Services.AddDbContext<Prn222projectContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("MyCnn")));
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
@@ -21,7 +28,7 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login"; 
+    options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
@@ -34,6 +41,13 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    await SeedData.Initialize(services, userManager, roleManager);
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -48,6 +62,23 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
+
+app.UseStatusCodePages(async context =>
+{
+    var user = context.HttpContext.User;
+
+    if (context.HttpContext.Response.StatusCode == 404)
+    {
+        if (user.Identity.IsAuthenticated)
+        {
+            context.HttpContext.Response.Redirect("/UserSite/Home");
+        }
+        else
+        {
+            context.HttpContext.Response.Redirect("/Identity/Account/Login");
+        }
+    }
+});
 
 app.MapRazorPages();
 

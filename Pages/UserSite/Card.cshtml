@@ -1,0 +1,37 @@
+﻿@page
+@model ProjectPRN222.Pages.UserSite.CardModel
+@{
+}
+<h2>Giỏ hàng của bạn</h2>
+
+<form method="post" asp-page-handler="Update">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Chọn</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CartProducts)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selectedIds" value="@item.Id" />
+                    </td>
+                    <td>@item.Product?.Name</td>
+                    <td>@item.Product?.Price</td>
+                    <td>
+                        <input type="number" name="quantities[@item.Id]" value="@item.Quantity" min="1" class="form-control" />
+                    </td>
+                    <td>@(item.Quantity * item.Product?.Price ?? 0):N0 đ</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Cập nhật giỏ hàng</button>
+</form>

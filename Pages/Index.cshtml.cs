@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,10 +19,16 @@ namespace ProjectPRN222.Pages
         }
 
         public User CurrentUser { get; set; }
-
+        public IList<string> roles { get; set; }
         public async Task OnGetAsync()
         {
             CurrentUser = await _userManager.GetUserAsync(User);
+            roles = await _userManager.GetRolesAsync(CurrentUser);
+            foreach (var role in roles)
+            {
+                Console.WriteLine(role);  
+            }
+
         }
     }
 }
