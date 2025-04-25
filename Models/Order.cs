@@ -9,7 +9,7 @@ public partial class Order
 
     public string? UserId { get; set; }
 
-    public string? Status { get; set; }
+    public OrderStatus Status { get; set; }
 
     public DateTime? CreateAt { get; set; }
 

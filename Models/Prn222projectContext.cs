@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ProjectPRN222.Models;
 
@@ -122,10 +123,20 @@ public partial class Prn222projectContext : IdentityDbContext<User>
             entity.ToTable("Order");
 
             entity.Property(e => e.CreateAt).HasColumnType("datetime");
-            entity.Property(e => e.Status).HasMaxLength(50);
+
+            var statusConverter = new ValueConverter<OrderStatus, string>(
+                v => v.ToString(),
+                v => (OrderStatus)Enum.Parse(typeof(OrderStatus), v)
+            );
+
+            entity.Property(e => e.Status)
+                .HasConversion(statusConverter)  
+                .HasMaxLength(50);             
+
             entity.Property(e => e.UserId).HasMaxLength(450);
 
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Order__UserId__68487DD7");
         });
