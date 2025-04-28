@@ -84,6 +84,13 @@
                                     </ul>
                                 </div>
                             </li>
+                                <span class="nav-link text-dark">Hello, @User.Identity.Name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <form method="post" asp-area="Identity" asp-page="/Account/Login" id="logoutForm">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </li>
                         }
                         else
                         {
@@ -99,7 +106,6 @@
             </div>
         </nav>
     </header>
-
 
     <div class="container">
         <main role="main" class="pb-3 m-5">

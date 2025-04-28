@@ -29,6 +29,9 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddSingleton<BankSettings>();
 
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddIdentity<User, IdentityRole>()
 	.AddEntityFrameworkStores<Prn222projectContext>()
 	.AddDefaultTokenProviders();
