@@ -39,11 +39,11 @@ namespace ProjectPRN222.Pages.Orders
             }
 
             // L?c theo tr?ng thái ??n hàng
-            if (!string.IsNullOrEmpty(StatusFilter))
+            // Convert the StatusFilter string to an OrderStatus enum value
+            if (!string.IsNullOrEmpty(StatusFilter) && Enum.TryParse<OrderStatus>(StatusFilter, out var status))
             {
-                query = query.Where(o => o.Status == StatusFilter);
+                query = query.Where(o => o.Status == status);
             }
-
             Orders = await query
                 .OrderByDescending(o => o.CreateAt)
                 .ToListAsync();

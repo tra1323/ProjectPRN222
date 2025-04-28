@@ -15,7 +15,7 @@ namespace ProjectPRN222.Services
         public DashboardDto GetDashboardData()
         {
             var orders = _context.Orders
-                .Where(o => o.Status == "Completed")
+                .Where(o => o.Status == OrderStatus.Delivered)
                 .Include(o => o.OrderDetails)
                 .ToList();
 
