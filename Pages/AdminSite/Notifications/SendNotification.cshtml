@@ -1,0 +1,41 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@model ProjectPRN222.Pages.AdminSite.Notifications.SendNotificationModel
+@{
+    ViewData["Title"] = "Gửi Thông Báo";
+}
+
+<h2>Gửi Thông Báo</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label>Tiêu đề</label>
+        <input asp-for="Notification.Title" class="form-control" />
+    </div>
+
+    <div class="form-group mt-3">
+        <label>Chọn cách gửi:</label>
+        <select asp-for="SelectedOption" class="form-control">
+            <option value="single">Gửi 1 người theo Email</option>
+            <option value="all">Gửi tất cả User và Staff</option>
+        </select>
+    </div>
+
+    <div class="form-group mt-3">
+        <label>Email người nhận (nếu gửi cho 1 người):</label>
+        <input asp-for="TargetEmail" class="form-control" />
+        <small class="form-text text-muted">Bỏ trống nếu gửi cho tất cả</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Gửi Thông Báo</button>
+</form>

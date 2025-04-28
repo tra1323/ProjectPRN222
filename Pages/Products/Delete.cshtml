@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Staff")]
+@model ProjectPRN222.Pages.Products.DeleteModel
+@{
+    ViewData["Title"] = "Xóa Sản Phẩm";
+}
+
+<h2>Xóa Sản Phẩm</h2>
+
+<p>Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+
+<div>
+    <strong>@Model.Product.Name</strong>
+</div>
+<form method="post">
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-page="./Index" class="btn btn-secondary">Hủy</a>
+</form>

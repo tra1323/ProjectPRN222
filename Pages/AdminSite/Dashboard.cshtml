@@ -1,0 +1,92 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@model ProjectPRN222.Pages.AdminSite.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>📊 Admin Dashboard</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Tổng Doanh Thu</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.DashboardData.TotalRevenue.ToString("C")</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Tổng Đơn Hàng</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.DashboardData.TotalOrders</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Sản Phẩm Đã Bán</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.DashboardData.TotalProductsSold</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>🔥 Top Sản Phẩm Bán Chạy</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tên Sản Phẩm</th>
+            <th>Số Lượng Bán</th>
+            <th>Doanh Thu</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.DashboardData.TopSellingProducts)
+        {
+            <tr>
+                <td>@product.ProductName</td>
+                <td>@product.QuantitySold</td>
+                <td>@product.TotalRevenue.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>📅 Doanh Thu </h3>
+
+<form method="get" class="row g-3 align-items-end mb-3">
+    <div class="col-auto">
+        <label class="form-label">Từ ngày:</label>
+        <input type="date" name="fromDate" class="form-control" value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <label class="form-label">Đến ngày:</label>
+        <input type="date" name="toDate" class="form-control" value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Lọc doanh thu</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ngày</th>
+            <th>Doanh Thu</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var day in Model.FilteredRevenueByDate)
+        {
+            <tr>
+                <td>@day.Date.ToString("dd/MM/yyyy")</td>
+                <td>@day.Revenue.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

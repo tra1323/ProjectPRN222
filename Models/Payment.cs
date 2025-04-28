@@ -10,9 +10,6 @@ public partial class Payment
     public string? Content { get; set; }
 
     public decimal? Price { get; set; }
-
-    public string? TransactionCode { get; set; }
-
     public string? Status { get; set; }
 
     public int? OrderId { get; set; }

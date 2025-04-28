@@ -1,0 +1,41 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@model ProjectPRN222.Pages.AdminSite.Accounts.IndexModel
+@{
+    ViewData["Title"] = "Quản Lý Tài Khoản";
+}
+
+<h2>Danh Sách Tài Khoản</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Tên đăng nhập</th>
+            <th>Roles</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>@item.User.Email</td>
+                <td>@item.User.UserName</td>
+                <td>@string.Join(", ", item.Roles)</td>
+                <td>
+                    <a asp-page="./EditRole" asp-route-id="@item.User.Id" class="btn btn-sm btn-warning">Đổi Role</a>
+                    <a asp-page="./LockUnlock" asp-route-id="@item.User.Id" class="btn btn-sm btn-secondary ms-1">
+                        @(item.User.LockoutEnd != null && item.User.LockoutEnd > DateTimeOffset.UtcNow ? "Mở Khóa" : "Khóa")
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

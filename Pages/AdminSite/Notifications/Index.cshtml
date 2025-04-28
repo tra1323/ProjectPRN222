@@ -1,0 +1,27 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "User,Staff")]
+@model ProjectPRN222.Pages.AdminSite.Notifications.IndexModel
+@{
+    ViewData["Title"] = "Thông Báo";
+}
+
+<h2>Thông Báo Của Bạn</h2>
+
+@if (!Model.Notifications.Any())
+{
+    <p>Không có thông báo nào.</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var noti in Model.Notifications)
+        {
+            <li class="list-group-item">
+                <strong>@noti.Title</strong>
+                <br />
+                <small>Gửi lúc: @noti.CreateAt?.ToString("dd/MM/yyyy HH:mm") bởi @noti.CreateBy</small>
+            </li>
+        }
+    </ul>
+}
