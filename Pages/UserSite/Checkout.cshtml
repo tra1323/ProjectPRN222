@@ -1,0 +1,52 @@
+﻿@page
+@model ProjectPRN222.Pages.UserSite.CheckoutModel
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+<h2>Thông tin thanh toán</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SelectedProducts)
+        {
+            <tr>
+                <td><img src="@item.Product.ImageUrl" alt="Ảnh" style="width: 80px; height: auto;" /></td>
+                <td>@item.Product.Name</td>
+                <td>@item.Product.Price.ToString("N0") đ</td>
+                <td>@item.Quantity</td>
+                <td>@((item.Quantity * item.Product.Price).ToString("N0")) đ</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" style="text-align: right;"><strong>Tổng cộng:</strong></td>
+            <td><strong>@Model.TotalAmount.ToString("N0") đ</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<hr />
+
+<h4>Chuyển khoản ngân hàng</h4>
+<p>Vui lòng chuyển khoản theo thông tin bên dưới:</p>
+<ul>
+    <li><strong>Ngân hàng:</strong> Vietcombank</li>
+    <li><strong>Chủ tài khoản:</strong> Nguyễn Văn A</li>
+    <li><strong>Số tài khoản:</strong> 0123456789</li>
+    <li><strong>Nội dung chuyển khoản:</strong> THANHTOAN@Model.OrderId</li>
+</ul>
+
+<h5>Hoặc quét mã QR để thanh toán:</h5>
+<img src="/images/qr-demo.png" alt="QR Code" style="width: 250px;" />
+
+<a href="/UserSite/OrderSuccess?orderId=@Model.OrderId" class="btn btn-success mt-3">Tôi đã thanh toán</a>

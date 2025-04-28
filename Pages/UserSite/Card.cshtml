@@ -4,7 +4,8 @@
 }
 <h2>Giỏ hàng của bạn</h2>
 
-<form method="post" asp-page-handler="Update">
+<form method="post">
+    @Html.AntiForgeryToken()
     <table class="table">
         <thead>
             <tr>
@@ -20,18 +21,35 @@
             {
                 <tr>
                     <td>
-                        <input type="checkbox" name="selectedIds" value="@item.Id" />
+                        <input type="checkbox"
+                               id="checkbox-@item.Id"
+                               name="selectedIds"
+                               value="@item.Id"
+                               onchange="updateTotal()" />
                     </td>
                     <td>@item.Product?.Name</td>
                     <td>@item.Product?.Price</td>
                     <td>
-                        <input type="number" name="quantities[@item.Id]" value="@item.Quantity" min="1" class="form-control" />
+                        <input type="number"
+                               name="quantities[@item.Id]"
+                               value="@item.Quantity"
+                               min="1"
+                               class="form-control"
+                               onchange="updateTotal()" />
                     </td>
-                    <td>@(item.Quantity * item.Product?.Price ?? 0):N0 đ</td>
+                    <td id="total-@item.Id">
+                        @(((decimal)(item.Quantity * item.Product.Price)).ToString("N2")) đ
+                    </td>
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right;">Tổng tiền:</td>
+                <td id="grandTotal">0 đ</td>
+            </tr>
+        </tfoot>
     </table>
 
-    <button type="submit" class="btn btn-primary">Cập nhật giỏ hàng</button>
+    <button type="submit" class="btn btn-primary">Thanh toán</button>
 </form>

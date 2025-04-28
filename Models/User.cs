@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace ProjectPRN222.Models;
 
 public partial class User : IdentityUser
 {
     public string? FullName { get; set; } = null!;
+    public string? Address { get; set; } = null!;
 
     public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
 

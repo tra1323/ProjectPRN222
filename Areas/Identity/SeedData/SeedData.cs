@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProjectPRN222.Models;
-using System.Data;
 
 namespace ProjectPRN222.Areas.Identity.SeedData
 {
@@ -11,8 +10,12 @@ namespace ProjectPRN222.Areas.Identity.SeedData
             // Khởi tạo vai trò từ Enum
             await CreateRoles(roleManager);
 
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            string adminEmail = configuration["AdminUser:Email"];
+            string adminPassword = configuration["AdminUser:Password"];
+
             // Tạo người dùng nếu chưa có
-            await CreateAdminUser(userManager);
+            await CreateAdminUser(userManager, adminEmail, adminPassword);
         }
 
         private static async Task CreateRoles(RoleManager<IdentityRole> roleManager)
@@ -29,17 +32,18 @@ namespace ProjectPRN222.Areas.Identity.SeedData
             }
         }
 
-        private static async Task CreateAdminUser(UserManager<User> userManager)
+        private static async Task CreateAdminUser(UserManager<User> userManager, string email, string pass)
         {
-            var user = await userManager.FindByEmailAsync("admin@gmail.com");
+            var user = await userManager.FindByEmailAsync(email);
             if (user == null)
             {
+
                 user = new User
                 {
-                    UserName = "admin@gmail.com",
-                    Email = "admin@gmail.com",
+                    UserName = email,
+                    Email = email,
                 };
-                var result = await userManager.CreateAsync(user, "Admin123!");
+                var result = await userManager.CreateAsync(user, pass);
 
                 if (result.Succeeded)
                 {

@@ -1,0 +1,56 @@
+﻿@page
+@model ProjectPRN222.Pages.UserSite.OrderModel
+@using ProjectPRN222.Models
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+}
+
+<h2>Đơn hàng của tôi</h2>
+
+@foreach (var status in Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>())
+{
+    var orders = Model.OrdersByStatus.ContainsKey(status) ? Model.OrdersByStatus[status] : new List<Order>();
+
+    <h3>@GetStatusText(status) (@orders.Count)</h3>
+
+    @if (orders.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Ngày đặt</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in orders)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@(order.CreateAt?.ToString("dd/MM/yyyy") ?? "Không xác định")</td>
+                        <td>@GetStatusText(order.Status)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có đơn hàng ở trạng thái này.</p>
+    }
+}
+
+@functions {
+    private string GetStatusText(OrderStatus status)
+    {
+        return status switch
+        {
+            OrderStatus.PendingPayment => "Chờ thanh toán",
+            OrderStatus.AwaitingConfirmation => "Chờ xác nhận",
+            OrderStatus.Shipping => "Đang giao hàng",
+            OrderStatus.Delivered => "Giao hàng thành công",
+            _ => "Không xác định"
+        };
+    }
+}

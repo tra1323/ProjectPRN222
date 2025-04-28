@@ -1,0 +1,59 @@
+﻿@page
+@model ProjectPRN222.Pages.UserSite.ProfileModel
+@{
+	ViewData["Title"] = "Thông tin cá nhân";
+}
+
+<h2>Thông tin cá nhân</h2>
+
+@if (Model.SuccessMessage != null)
+{
+	<div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+<form method="post" id="profileForm">
+	<div class="form-group">
+		<label asp-for="Input.FullName"></label>
+		<input asp-for="Input.FullName" class="form-control editable-field" readonly />
+		<span asp-validation-for="Input.FullName" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Input.Email"></label>
+		<input asp-for="Input.Email" class="form-control" readonly />
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Input.PhoneNumber"></label>
+		<div>
+			<input asp-for="Input.PhoneNumber" class="form-control" readonly />
+			@if (!Model.IsPhoneConfirmed)
+			{
+				<a asp-page="/UserSite/PhoneConfirm" class="btn btn-warning mt-2">Nhập số điện thoại</a>
+			}
+		</div>
+		<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Input.Address"></label>
+		<input asp-for="Input.Address" class="form-control editable-field" readonly />
+		<span asp-validation-for="Input.Address" class="text-danger"></span>
+	</div>
+
+	<button type="button" class="btn btn-secondary" id="editBtn" onclick="toggleEdit()">Edit</button>
+	<button type="submit" class="btn btn-primary d-none" id="saveBtn">Save</button>
+</form>
+
+<script>
+	function toggleEdit() {
+		// Enable only FullName and Address fields
+		document.querySelectorAll('.editable-field').forEach(input => {
+			input.removeAttribute('readonly');
+		});
+
+		// Toggle buttons
+		document.getElementById('editBtn').classList.add('d-none');
+		document.getElementById('saveBtn').classList.remove('d-none');
+	}
+</script>

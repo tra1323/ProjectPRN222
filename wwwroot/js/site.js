@@ -1,4 +1,23 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function updateTotal() {
+    let total = 0;
 
-// Write your JavaScript code.
+    document.querySelectorAll('tr').forEach(row => {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        const quantityInput = row.querySelector('input[type="number"]');
+        const totalCell = row.querySelector('td[id^="total-"]');
+
+        if (checkbox && checkbox.checked) {
+            const price = parseFloat(row.querySelector('td:nth-child(3)').innerText.replace(/[^\d.]/g, ''));
+            const quantity = parseInt(quantityInput.value);
+            const productTotal = price * quantity;
+
+            total += productTotal;
+
+            totalCell.innerText = productTotal.toLocaleString('vi-VN') + ' đ';
+        }
+    });
+
+    document.getElementById('grandTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
+}
+
+window.onload = updateTotal;
