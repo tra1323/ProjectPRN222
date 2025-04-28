@@ -1,0 +1,42 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Staff")]
+@model ProjectPRN222.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Quản Lý Sản Phẩm";
+}
+
+<h2>Danh Sách Sản Phẩm</h2>
+
+<a asp-page="./Create" class="btn btn-success mb-3">Thêm Sản Phẩm</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Sản Phẩm</th>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Số Lượng</th>
+            <th>Danh Mục</th>
+            <th>Nhà Sản Xuất</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Stock</td>
+                <td>@product.Category?.Name</td>
+                <td>@product.Manufacturer?.Name</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@product.Id" class="btn btn-primary">Chỉnh Sửa</a>
+                    <a asp-page="./Delete" asp-route-id="@product.Id" class="btn btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
