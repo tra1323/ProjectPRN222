@@ -38,5 +38,17 @@ namespace ProjectPRN222.Pages.UserSite
 
             return Page();
         }
+        public IActionResult OnPostAsync(string totalAmount, string content, string order_id)
+        {
+            Payment payment = new Payment
+            {
+                OrderId = int.Parse(order_id),
+                Content = content,
+                Price = decimal.Parse(totalAmount)
+            };
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+            return RedirectToPage();
+        }
     }
 }

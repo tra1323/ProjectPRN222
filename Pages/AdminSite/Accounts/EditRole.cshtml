@@ -1,0 +1,23 @@
+﻿@page "{id}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@model ProjectPRN222.Pages.AdminSite.Accounts.EditRoleModel
+@{
+    ViewData["Title"] = "Đổi Vai Trò Người Dùng";
+}
+
+<h2>Đổi Role Cho: @Model.TargetUser.UserName</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Chọn Role mới:</label>
+        <select asp-for="SelectedRole" class="form-control">
+            @foreach (var role in Model.AllRoles)
+            {
+                <option value="@role">@role</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Cập nhật Role</button>
+</form>

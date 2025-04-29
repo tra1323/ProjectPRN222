@@ -1,0 +1,59 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Staff")]
+@model ProjectPRN222.Pages.Orders.IndexModel
+@{
+    ViewData["Title"] = "Quản Lý Đơn Hàng";
+}
+
+<h2>Danh Sách Đơn Hàng</h2>
+
+<!-- Form tìm kiếm và lọc -->
+<form method="get" class="form-inline mb-3 d-flex align-items-center">
+  <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control mr-2 flex-grow-1" placeholder="Tìm kiếm mã đơn hàng hoặc tên người dùng..." />
+  <select name="StatusFilter" class="form-control mr-2">
+      <option value="" selected="@(string.IsNullOrEmpty(Model.StatusFilter) ? "selected" : null)">Tất cả trạng thái</option>
+      <option value="Pending" selected="@(Model.StatusFilter == "Pending" ? "selected" : null)">Đang xử lý</option>
+      <option value="Completed" selected="@(Model.StatusFilter == "Completed" ? "selected" : null)">Hoàn thành</option>
+      <option value="Cancelled" selected="@(Model.StatusFilter == "Cancelled" ? "selected" : null)">Hủy</option>
+  </select>
+  <button type="submit" class="btn btn-primary">Lọc</button>
+</form>
+
+<!-- Bảng hiển thị danh sách đơn hàng -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã Đơn Hàng</th>
+            <th>Người Đặt</th>
+            <th>Trạng Thái</th>
+            <th>Ngày Tạo</th>
+            <th>Tổng Giá Trị</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Orders.Any())
+        {
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.User?.UserName</td>
+                    <td>@order.Status</td>
+                    <td>@order.CreateAt?.ToString("dd/MM/yyyy")</td>
+                    <td>@order.OrderDetails.Sum(od => od.Price * od.Quantity)</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@order.Id" class="btn btn-primary">Chi Tiết</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">Không có đơn hàng nào.</td>
+            </tr>
+        }
+    </tbody>
+</table>

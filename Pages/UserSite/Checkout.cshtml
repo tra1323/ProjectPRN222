@@ -1,38 +1,39 @@
 ﻿@page
 @model ProjectPRN222.Pages.UserSite.CheckoutModel
 @{
-    ViewData["Title"] = "Thanh toán";
+	ViewData["Title"] = "Thanh toán";
 }
+
 <h2>Thông tin thanh toán</h2>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Hình ảnh</th>
-            <th>Tên sản phẩm</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Tổng</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.SelectedProducts)
-        {
-            <tr>
-                <td><img src="@item.Product.ImageUrl" alt="Ảnh" style="width: 80px; height: auto;" /></td>
-                <td>@item.Product.Name</td>
-                <td>@item.Product.Price.ToString("N0") đ</td>
-                <td>@item.Quantity</td>
-                <td>@((item.Quantity * item.Product.Price).ToString("N0")) đ</td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4" style="text-align: right;"><strong>Tổng cộng:</strong></td>
-            <td><strong>@Model.TotalAmount.ToString("N0") đ</strong></td>
-        </tr>
-    </tfoot>
+	<thead>
+		<tr>
+			<th>Hình ảnh</th>
+			<th>Tên sản phẩm</th>
+			<th>Giá</th>
+			<th>Số lượng</th>
+			<th>Tổng</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.SelectedProducts)
+		{
+			<tr>
+				<td><img src="@item.Product.ImageUrl" alt="Ảnh" style="width: 80px; height: auto;" /></td>
+				<td>@item.Product.Name</td>
+				<td>@item.Product.Price?.ToString("N0") đ</td>
+				<td>@item.Quantity</td>
+				<td>@((item.Quantity * item.Product.Price)?.ToString("N0")) đ</td>
+			</tr>
+		}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4" style="text-align: right;"><strong>Tổng cộng:</strong></td>
+			<td><strong>@Model.TotalAmount.ToString("N0") đ</strong></td>
+		</tr>
+	</tfoot>
 </table>
 
 <hr />
@@ -40,13 +41,49 @@
 <h4>Chuyển khoản ngân hàng</h4>
 <p>Vui lòng chuyển khoản theo thông tin bên dưới:</p>
 <ul>
-    <li><strong>Ngân hàng:</strong> Vietcombank</li>
-    <li><strong>Chủ tài khoản:</strong> Nguyễn Văn A</li>
-    <li><strong>Số tài khoản:</strong> 0123456789</li>
-    <li><strong>Nội dung chuyển khoản:</strong> THANHTOAN@Model.OrderId</li>
+	<li><strong>Ngân hàng:</strong> @Model.BankId</li>
+	<li><strong>Chủ tài khoản:</strong> @Model.AccountName</li>
+	<li><strong>Số tài khoản:</strong> @Model.AccountNo</li>
+	<li><strong>Nội dung chuyển khoản:</strong> @Model.TransferInfo</li>
 </ul>
 
 <h5>Hoặc quét mã QR để thanh toán:</h5>
-<img src="/images/qr-demo.png" alt="QR Code" style="width: 250px;" />
+<img src="https://img.vietqr.io/image/@Model.BankId-@Model.AccountNo-qr_only.png?amount=@((int)Model.TotalAmount)&addInfo=@Model.TransferInfo" alt="QR Code" style="width: 250px;" />
+<form id="PaymentSuccess" hidden method="post" asp-page-handler="PaymentComplete">
+	<input name="totalAmount" value="@Model.TotalAmount" />
+	<input name="content" value="@Model.TransferInfo" />
+	<input name="order_id" value="@Model.NewOrder.Id" />
+</form>
+@section Scripts {
+	<script>
+		async function checkPaid(price, content) {
+			try {
+				const res = await fetch(
+						"https://script.google.com/macros/s/AKfycbxSgk4jx0Vgc8J68DPWt2hMjYfIQhzXN8LKfXgQs_mAGWPNa44jOQZ1ijv0XYTQgQ2G/exec"
+						);
+				const data = await res.json();
+				console.log(data);
+				const lastPaid = data.data[data.data.length - 1];
+				const lastPrice = lastPaid.price;
+				const lastContent = lastPaid.content;
+				let count = 0;
+				if (lastPrice >= price && lastContent.includes(content)) {
+					console.log("1");
+					count++;
+					if (count === 1) {
+						console.log("2");
+						const formSuccess = document.getElementById("PaymentSuccess").submit();
+						return;
+					}
+				}
+			} catch {
+				console.error("Error")
+			}
+		}
 
-<a href="/UserSite/OrderSuccess?orderId=@Model.OrderId" class="btn btn-success mt-3">Tôi đã thanh toán</a>
+		setInterval(() => {
+		checkPaid("@Model.TotalAmount", "@Model.TransferInfo");
+			}, 1000);
+	</script>
+
+}

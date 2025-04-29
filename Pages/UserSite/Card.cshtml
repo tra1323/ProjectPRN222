@@ -4,7 +4,7 @@
 }
 <h2>Giỏ hàng của bạn</h2>
 
-<form method="post">
+<form method="post" asp-page="/UserSite/Checkout">
     @Html.AntiForgeryToken()
     <table class="table">
         <thead>
@@ -28,7 +28,7 @@
                                onchange="updateTotal()" />
                     </td>
                     <td>@item.Product?.Name</td>
-                    <td>@item.Product?.Price</td>
+                    <td>@item.Product?.Price?.ToString("N0") đ</td>
                     <td>
                         <input type="number"
                                name="quantities[@item.Id]"
@@ -38,11 +38,20 @@
                                onchange="updateTotal()" />
                     </td>
                     <td id="total-@item.Id">
-                        @(((decimal)(item.Quantity * item.Product.Price)).ToString("N2")) đ
+                        @(((decimal)(item.Quantity * item.Product.Price)).ToString("N0")) đ
+                    </td>
+                    <td>
+                        <button type="submit"
+                                formaction="?handler=DeleteSingle&id=@item.Id"
+                                formmethod="post"
+                                class="btn btn-danger btn-sm">
+                            Xóa
+                        </button>
                     </td>
                 </tr>
             }
         </tbody>
+
         <tfoot>
             <tr>
                 <td colspan="4" style="text-align: right;">Tổng tiền:</td>

@@ -1,0 +1,15 @@
+﻿@page "{id}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@model ProjectPRN222.Pages.AdminSite.Accounts.LockUnlockModel
+@{
+    ViewData["Title"] = "Khóa / Mở Khóa Tài Khoản";
+}
+
+<h2>Khóa / Mở khóa: @Model.TargetUser.UserName</h2>
+
+<form method="post">
+    <p>Bạn chắc chắn muốn thay đổi trạng thái khóa cho tài khoản này?</p>
+    <button type="submit" class="btn btn-warning">Xác nhận</button>
+    <a asp-page="./Index" class="btn btn-secondary">Hủy</a>
+</form>

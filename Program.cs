@@ -24,7 +24,14 @@ builder.Services.AddSingleton<SmsService>();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+builder.Services.AddSingleton<BankSettings>();
 
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddIdentity<User, IdentityRole>()
 	.AddEntityFrameworkStores<Prn222projectContext>()
 	.AddDefaultTokenProviders();
@@ -71,7 +78,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
-app.UseAuthorization();
+app.UseAuthentication(); // ?? Xác th?c
+app.UseAuthorization();  // ? Phân quy?n
+
 
 app.UseStatusCodePages(async context =>
 {

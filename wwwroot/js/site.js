@@ -5,19 +5,16 @@
         const checkbox = row.querySelector('input[type="checkbox"]');
         const quantityInput = row.querySelector('input[type="number"]');
         const totalCell = row.querySelector('td[id^="total-"]');
-
-        if (checkbox && checkbox.checked) {
+        if (totalCell) {
             const price = parseFloat(row.querySelector('td:nth-child(3)').innerText.replace(/[^\d.]/g, ''));
             const quantity = parseInt(quantityInput.value);
             const productTotal = price * quantity;
-
-            total += productTotal;
-
             totalCell.innerText = productTotal.toLocaleString('vi-VN') + ' đ';
-        }
+            if (checkbox && checkbox.checked) {
+                total += productTotal
+            }
+        } 
     });
 
     document.getElementById('grandTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
 }
-
-window.onload = updateTotal;

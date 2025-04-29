@@ -1,0 +1,53 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Staff")]
+@model ProjectPRN222.Pages.Products.CreateModel
+@{
+    ViewData["Title"] = "Thêm Sản Phẩm";
+}
+
+<h2>Thêm Sản Phẩm</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Tên Sản Phẩm</label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Price">Giá</label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Stock">Số Lượng</label>
+        <input asp-for="Product.Stock" class="form-control" />
+        <span asp-validation-for="Product.Stock" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Description">Mô Tả</label>
+        <textarea asp-for="Product.Description" class="form-control"></textarea>
+        <span asp-validation-for="Product.Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="CategoryId">Danh Mục</label>
+        <select asp-for="Product.CategoryId" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+            <option value="">Chọn danh mục</option>
+        </select>
+        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="ManufacturerId">Nhà Sản Xuất</label>
+        <select asp-for="Product.ManufacturerId" class="form-control" asp-items="@(new SelectList(Model.Manufacturers, "Id", "Name"))">
+            <option value="">Chọn nhà sản xuất</option>
+        </select>
+        <span asp-validation-for="Product.ManufacturerId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="ImageUrl">URL Hình Ảnh</label>
+        <input asp-for="Product.ImageUrl" class="form-control" />
+        <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-page="./Index" class="btn btn-secondary">Hủy</a>
+</form>
