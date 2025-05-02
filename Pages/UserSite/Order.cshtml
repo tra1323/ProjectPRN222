@@ -46,12 +46,6 @@
                                 <td>@(order.CreateAt?.ToString("dd/MM/yyyy") ?? "Không xác định")</td>
                                 <td>@GetStatusText(order.Status)</td>
                                 <td>
-                                    @if (order.Status == OrderStatus.Delivered)
-                                    {
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-order-id="@order.Id">
-                                            Đã nhận hàng
-                                        </button>
-                                    }
                                     <button class="btn btn-info" data-bs-target="#orderDetailsModal" data-order-id="@order.Id">
                                         Xem chi tiết
                                     </button>

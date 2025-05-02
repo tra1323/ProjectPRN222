@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ProjectPRN222.Models;
+﻿namespace ProjectPRN222.Models;
 
 public partial class Product
 {
@@ -21,6 +18,7 @@ public partial class Product
     public int? CategoryId { get; set; }
 
     public int? ManufacturerId { get; set; }
+    public bool? isActive { get; set; }
     public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
 
     public virtual Category? Category { get; set; }

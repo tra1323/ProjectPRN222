@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using ProjectPRN222.Models;
 
 namespace ProjectPRN222.Pages.UserSite
@@ -51,6 +45,10 @@ namespace ProjectPRN222.Pages.UserSite
 
         public async Task<IActionResult> OnPostAddToCartAsync(int productId)
         {
+            Product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Manufacturer)
+                .FirstOrDefaultAsync(p => p.Id == productId);
             var user = await _userManager.GetUserAsync(User);
             _context.Cards.Add(new Card(user.Id, productId, 1));
             await _context.SaveChangesAsync();

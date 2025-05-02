@@ -1,122 +1,118 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ProjectPRN222</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ProjectPRN222.styles.css" asp-append-version="true" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - ProjectPRN222</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/ProjectPRN222.styles.css" asp-append-version="true" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">ProjectPRN222</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container">
+				<a class="navbar-brand" asp-area="" asp-page="/Index">ProjectPRN222</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        @if (!User.Identity.IsAuthenticated || (!User.IsInRole("Admin") && !User.IsInRole("Staff")))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Card">Card</a>
-                            </li>
-                        }
+				<div class="collapse navbar-collapse" id="navbarContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						@if (!User.Identity.IsAuthenticated || (!User.IsInRole("Admin") && !User.IsInRole("Staff")))
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Home">Home</a>
+							</li>
 
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Accounts/Index">Manage Account</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Notifications/SendNotification">Send Notification</a>
-                            </li>
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Staff"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Manage Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Manage Products</a>
-                            </li>
-                        })
-                    </ul>
+						}
 
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @User.Identity.Name
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li class="d-flex justify-content-center">
-                                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Profile">Thông tin cá nhân</a>
-                                        </li>
-                                        <li class="d-flex justify-content-center">
-                                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Card">Giỏ hàng</a>
-                                        </li>
-                                        <li class="d-flex justify-content-center">
-                                            <a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Order">Đơn hàng của tôi</a>
-                                        </li>
-                                        <li class="d-flex justify-content-center">
-                                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Đổi mật khẩu</a>
-                                        </li>
-                                        <li class="d-flex justify-content-center">
-                                            <form method="post" asp-area="Identity" asp-page="/Account/Logout" id="logoutForm">
-                                                <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                                <span class="nav-link text-dark">Hello, @User.Identity.Name!</span>
-                            </li>
-                            <li class="nav-item">
-                                <form method="post" asp-area="Identity" asp-page="/Account/Login" id="logoutForm">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+						@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Dashboard">Dashboard</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Accounts/Index">Manage Account</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/AdminSite/Notifications/SendNotification">Send Notification</a>
+							</li>
+						}
+						@if (User.Identity.IsAuthenticated && User.IsInRole("Staff"))
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Manage Orders</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Manage Products</a>
+							</li>
+						}
+					</ul>
 
-    <div class="container">
-        <main role="main" class="pb-3 m-5">
-            @RenderBody()
-        </main>
-    </div>
+					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+						@if (User.Identity.IsAuthenticated)
+						{
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+							<li class="nav-item">
+								<div class="dropdown">
+									<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										@User.Identity.Name
+									</button>
 
-    @await RenderSectionAsync("Scripts", required: false)
+									<ul class="dropdown-menu">
+										@if (User.IsInRole("User"))
+										{
+											<li class="d-flex justify-content-center">
+												<a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Profile">Thông tin cá nhân</a>
+											</li>
+											<li class="d-flex justify-content-center">
+												<a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Card">Giỏ hàng</a>
+											</li>
+											<li class="d-flex justify-content-center">
+												<a class="nav-link text-dark" asp-area="" asp-page="/UserSite/Order">Đơn hàng của tôi</a>
+											</li>
+											<li class="d-flex justify-content-center">
+												<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Đổi mật khẩu</a>
+											</li>
+										}
+										<li class="d-flex justify-content-center">
+											<form method="post" asp-area="Identity" asp-page="/Account/Logout" id="logoutForm">
+												<button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
+											</form>
+										</li>
+									</ul>
+								</div>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<div class="container">
+		<main role="main" class="pb-3 m-5">
+			@RenderBody()
+		</main>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

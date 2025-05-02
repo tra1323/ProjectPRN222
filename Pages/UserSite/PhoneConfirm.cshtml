@@ -2,6 +2,8 @@
 @model ProjectPRN222.Pages.UserSite.PhoneConfirmModel
 @{
 }
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "User")]
 <h2>Nhập số điện thoại</h2>
 
 <form method="post">
